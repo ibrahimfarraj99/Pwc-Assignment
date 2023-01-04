@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.css' rel='stylesheet' />
+    <script src="jquery-3.6.0.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+</head>
+
+<body>
+
+    <div id='map' style='width: 1000px; height: 500px;'></div>
+    <script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZmFycmFqOTkiLCJhIjoiY2xjZzIwOXV3MGFpYjNwcXVqbXprNmo4ZiJ9.n6aX6-ni8sU1_wazfJFYnA';
+    const map = new mapboxgl.Map({
+        container: 'map', // container ID
+        style: 'mapbox://styles/farraj99/clcg3e3yz000n15lbvei66tne', // style URL
+        center: [-74.5, 40], // starting position [lng, lat]
+        zoom: 9, // starting zoom
+    });
+
+    function myFunction() {
+        $.ajax({
+            method: 'GET',
+            url: 'https://api.api-ninjas.com/v1/geocoding?city=' + $('#click').val(),
+            headers: { 'X-Api-Key': 'WQVoDoxURYMx0BL0yzx92Q==SZ1Vr2gXxKFEOMQH'},
+            contentType: 'application/json',
+            success: function(result) {
+                console.log(result);
+                console.log(result[0].name);
+                mapboxgl.accessToken = 'pk.eyJ1IjoiZmFycmFqOTkiLCJhIjoiY2xjZzIwOXV3MGFpYjNwcXVqbXprNmo4ZiJ9.n6aX6-ni8sU1_wazfJFYnA';
+        const map = new mapboxgl.Map({
+        container: 'map', 
+        style: 'mapbox://styles/farraj99/clcg3e3yz000n15lbvei66tne', 
+        center: [result[0].longitude,result[0].latitude], 
+        zoom: 9, 
+    });
+            },
+            error: function ajaxError(jqXHR) {
+                console.error('Error: ', jqXHR.responseText);
+            }
+            
+        });
+       }
+
+      
+       $(document).ready(function () {
+        $('.has-spinner').click(function () {
+            var btn = $(this);
+            $(btn).buttonLoader('start');
+            setTimeout(function () {
+                $(btn).buttonLoader('stop');
+            }, 3000);
+        });
+    });
+</script>
+
+    <br>
+    <div class="SearchBar">
+    <input id="click" type="text" placeholder="Search.." name="search">
+    <button class="btn btn-default has-spinner" id="one" type="submit" onclick="myFunction()">Search</button>
+    </div>
+
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
